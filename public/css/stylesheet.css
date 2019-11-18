@@ -1,0 +1,19 @@
+#gridContainer {
+    display: inline-grid;
+    grid-template-columns: repeat(3, 350px);
+    grid-template-rows: repeat(2, 400px);
+    grid-gap: 20px 20px;
+}
+
+.imgCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px black solid;
+}
+img {
+    width: 350px;
+    height: 350px;
+    object-fit: scale-down;
+}
