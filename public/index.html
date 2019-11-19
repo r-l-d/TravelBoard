@@ -2,29 +2,48 @@
 <html>
 <head>
     <title>Imageboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="/css/stylesheet.css">
+    <script src="/js/vue.js"></script>
 </head>
 <body>
-
+<div class="container">
     <h1>Imageboard</h1>
-
-        <div id="main">
-            <div id="gridContainer">
-            <div class="imgCard" v-for='card in cards'>
-                <img :src="card.url" :alt="card.description">
-                {{card.title}}
-            </div>
+    <div id="main">
+            <form>
+                <input v-model='title' type="text" name="title" placeholder="title">
+                <input v-model='description'type="text" name="description" placeholder="description">
+                <input v-model='username' type="text" name="username" placeholder="username">
+                <input @change='handleChange' type="file" name="file" accept="image/*">
+                <button @click.prevent.default='handleClick'>Submit</button>
+            </form>
+            <div id="cardContainer">
+                <div class="row">
+                    <div class="col s12 m8 l4" v-for='card in cards'>
+                        <div class="card medium" >
+                            <div class="card-image">
+                                <img :src="card.url" :alt="card.description">
+                            </div>
+                            <div class="card-content">
+                                <p>{{card.title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
-
-
-    <script src="/js/vue.js"></script>
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
 </body>
 </html>
 
 
+<!-- <div class="imgCard" v-for='card in cards'>
+    <img :src="card.url" :alt="card.description">
+    {{card.title}}
+</div> -->
 
 
 

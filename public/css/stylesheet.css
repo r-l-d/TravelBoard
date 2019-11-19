@@ -1,7 +1,6 @@
-#gridContainer {
-    display: inline-grid;
-    grid-template-columns: repeat(3, 350px);
-    grid-template-rows: repeat(2, 400px);
+/* #gridContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-gap: 20px 20px;
 }
 
@@ -13,7 +12,5 @@
     border: 1px black solid;
 }
 img {
-    width: 350px;
-    height: 350px;
-    object-fit: scale-down;
-}
+    /* max-width: 400px; */
+/* object-fit: scale-down; */
