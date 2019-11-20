@@ -25,13 +25,19 @@ const uploader = multer({
     }
 });
 app.use(express.static("./public"));
+app.use(express.json());
+
+app.get("/cards", (req, res) => {
+    db.getCards().then(({ rows }) => {
+        res.json(rows.reverse());
+    });
+});
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     const { title, description, username } = req.body;
     const imageUrl = `${s3Url}${req.file.filename}`;
     db.addImage(imageUrl, username, title, description)
         .then(({ rows }) => {
-            console.log("rows[0]: ", rows[0]);
             res.json({
                 image: rows[0]
             });
@@ -41,24 +47,23 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 
-app.get("/animals", (req, res) => {
-    let animals = [
-        {
-            name: "squid",
-            emoji: "🦑"
-        },
-        {
-            name: "ewe",
-            emoji: "🐑"
-        }
-    ];
-    res.json(animals);
+app.get("/modal/:id", (req, res) => {
+    const { id } = req.params;
+    db.getImage(id)
+        .then(({ rows }) => {
+            res.json(rows[0]);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });
 
-app.get("/cards", (req, res) => {
-    db.getCards().then(({ rows }) => {
-        res.json(rows.reverse());
-    });
+app.get("/modal/:id/comment", (req, res) => {
+    //db get comments query
+});
+
+app.post("/modal/:id/comment", (req, res) => {
+    //db post comment query here
 });
 
 app.listen(8080, () => console.log("Listening"));
