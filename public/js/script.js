@@ -6,7 +6,9 @@ new Vue({
         description: "",
         username: "",
         file: null,
-        currentImage: null
+        currentImage: location.hash.slice(1),
+        comment: "",
+        comment_username: ""
     },
     mounted: function() {
         var me = this;
@@ -18,8 +20,6 @@ new Vue({
             .catch(function(err) {
                 console.log(err);
             });
-        // axios.get("/image"); //request for modal to get images
-        //put a .getroute in the THEN of this to get the comments. Put both image and comments into object and send to modal
     },
     methods: {
         handleClick: function(e) {
@@ -49,4 +49,9 @@ new Vue({
             this.currentImage = null;
         }
     }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    var elems = document.querySelectorAll(".modal");
+    var instances = M.Modal.init(elems, options);
 });

@@ -8,73 +8,89 @@
     <script src="/js/vue.js"></script>
 </head>
 <body>
-<div class="container">
-    <h1>Imageboard</h1>
-    <div id="main">
-        <div class="row">
-            <div class="col s12 m8 l4">
-                <form>
-                    <input v-model='title' type="text" name="title" placeholder="title">
-                    <input v-model='description'type="text" name="description" placeholder="description">
-                    <input v-model='username' type="text" name="username" placeholder="username">
-                    <input @change='handleChange' type="file" name="file" accept="image/*">
-                    <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
-                        <i class="material-icons right">send</i>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <!-- <h1>{{greeting}}</h1>
-        <my-component
-            @goodbye='sayGoodbye'
-            v-bind:greeting='greeting'
-            greetee='funky chicken'
-            >
-        </my-component> -->
-        <image-modal
-            v-if='currentImage'
-            v-bind:id='currentImage'
-            v-on:close='unsetCurrentImage'
-            >
-        </image-modal>
-        <div id="cardContainer">
+    <div class="container">
+        <h1>Imageboard</h1>
+        <div id="main">
             <div class="row">
-                <div class="col s12 m8 l4" v-for='card in cards' @click='setCurrentImage(card.id)'>
-                    <div class="card medium">
-                        <div class="card-image">
-                            <img :src="card.url" :alt="card.description">
-                        </div>
-                        <div class="card-content">
-                            <p>{{card.title}}</p>
+                <div class="col s12 m8 l4">
+                    <form>
+                        <input v-model='title' type="text" name="title" placeholder="title">
+                        <input v-model='description'type="text" name="description" placeholder="description">
+                        <input v-model='username' type="text" name="username" placeholder="username">
+                        <input @change='handleChange' type="file" name="file" accept="image/*">
+                        <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <image-modal
+                v-if='currentImage'
+                v-bind:id='currentImage'
+                v-on:close='unsetCurrentImage'
+                >
+            </image-modal>
+            <div id="cardContainer">
+                <div class="row">
+                    <div class="col s12 m8 l4" v-for='card in cards' @click='setCurrentImage(card.id)'>
+                        <div class="card hoverable">
+                            <div class="card-image">
+                                <img :src="card.url" :alt="card.description">
+                                <span class="card-title">{{card.title}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
-<!-- <script id="my-template" type="text/x-template">
-    <div>
-        <h3 @click='changeSubGreeting'>
-            {{greeting}}
-            {{subGreeting}}
-            {{greetee}}
-            <a href="javascript://" @click='sendMessageToParent'>X</a>
-        </h3>
-    </div>
-</script> -->
-<script id="modal-template" type="text/x-template">
-    <div>
-        <h3>This is the modal. The image ID is {{id}}</h3>
-        <img :src="url">
-        <h3>{{title}}</h3>
-        <h4>{{description}}</h4>
-        <h5>Uploaded by {{username}} on {{created_at}}</h5>
-        <a href="javascript://" @click='sendMessageToParent'>X</a>
-    </div>
-</script>
+    <!-- <script id="my-template" type="text/x-template">
+        <div>
+            <h3 @click='changeSubGreeting'>
+                {{greeting}}
+                {{subGreeting}}
+                {{greetee}}
+                <a href="javascript://" @click='sendMessageToParent'>X</a>
+            </h3>
+        </div>
+    </script> -->
+
+    <script id="modal-template" type="text/x-template">
+        <transition name="modal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+
+
+                        <h3>{{title}}</h3>
+                        <a href="javascript://" @click='sendMessageToParent'>X</a>
+                        <div class="modal-body">
+                        <img :src="url">
+                        <h6>{{description}}</h6>
+                        <p>Uploaded by {{username}} on {{created_at}}</p>
+                        <h6>Comments:</h6>
+                        <ul class="collection">
+                            <li class="collection-item" v-for='comment in comments' >
+                                <div>{{comment.comment_text}}</div>
+                                <div>{{comment.username}} on {{comment.created_at}}</div>
+                            </li>
+                        </ul>
+                        <h6>Add a comment:</h6>
+                        <form id="commentForm">
+                            <input v-model='comment' type="text" name="comment" placeholder="Comment">
+                            <input v-model='comment_username' type="text" name="comment_username" placeholder="Username">
+                            <button class="waves-effect waves-teal btn-flat" @click.prevent.default='submitComment'>Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </form>
+                    </div>
+        </div>
+    </script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/components.js"></script>

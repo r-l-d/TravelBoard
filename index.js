@@ -49,21 +49,37 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 app.get("/modal/:id", (req, res) => {
     const { id } = req.params;
+    let data = {};
     db.getImage(id)
         .then(({ rows }) => {
-            res.json(rows[0]);
+            data = rows[0];
+            db.getComments(id)
+                .then(({ rows }) => {
+                    data.comments = rows;
+                    res.json(data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         })
         .catch(err => {
             console.log(err);
         });
 });
 
-app.get("/modal/:id/comment", (req, res) => {
-    //db get comments query
-});
-
-app.post("/modal/:id/comment", (req, res) => {
-    //db post comment query here
+app.post("/comment", (req, res) => {
+    const { comment_username, comment, id } = req.body;
+    db.addComment(comment_username, comment, id)
+        .then(({ rows }) => {
+            res.json({
+                comment_text: comment,
+                created_at: rows[0].created_at,
+                username: comment_username
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
 });
 
 app.listen(8080, () => console.log("Listening"));
