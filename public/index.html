@@ -33,30 +33,25 @@
             </image-modal>
             <div id="cardContainer">
                 <div class="row">
-                    <div class="col s12 m8 l4" v-for='card in cards' @click='setCurrentImage(card.id)'>
+                    <!-- @click='setCurrentImage(card.id)' -->
+                    <div class="col s12 m8 l4" v-for='card in cards'>
                         <div class="card hoverable">
                             <div class="card-image">
-                                <img :src="card.url" :alt="card.description">
-                                <span class="card-title">{{card.title}}</span>
+                                <a :href="'#' + card.id">
+                                    <img :src="card.url" :alt="card.description">
+                                </a>
+                            </div>
+                            <div class="card-action">
+                                <a :href="'#' + card.id">{{card.title}}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <button v-if='showMore' @click='getNext'>See More</button>
         </div>
     </div>
 
-
-    <!-- <script id="my-template" type="text/x-template">
-        <div>
-            <h3 @click='changeSubGreeting'>
-                {{greeting}}
-                {{subGreeting}}
-                {{greetee}}
-                <a href="javascript://" @click='sendMessageToParent'>X</a>
-            </h3>
-        </div>
-    </script> -->
 
     <script id="modal-template" type="text/x-template">
         <transition name="modal">
@@ -67,6 +62,7 @@
 
                         <h3>{{title}}</h3>
                         <a href="javascript://" @click='sendMessageToParent'>X</a>
+
                         <div class="modal-body">
                         <img :src="url">
                         <h6>{{description}}</h6>
@@ -86,8 +82,11 @@
                                 <i class="material-icons right">send</i>
                             </button>
                         </form>
+                        </div>
                     </div>
-        </div>
+                </div>
+            </div>
+        </transition>
     </script>
 
 
@@ -97,20 +96,3 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
-
-
-<!-- <div class="imgCard" v-for='card in cards'>
-    <img :src="card.url" :alt="card.description">
-    {{card.title}}
-</div> -->
-
-
-
-
-
-<!-- <h2>The best cohort is...{{name}}</h2>
-<ul>
-<li v-for='animal in animals' v-on:click='myFunction(animal.name)'>
-{{animal.emoji}}
-</li>
-</ul> -->

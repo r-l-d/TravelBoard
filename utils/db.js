@@ -5,7 +5,7 @@ var db = spicedPg(
 );
 
 exports.getCards = function getCards() {
-    return db.query("SELECT * FROM images LIMIT 15");
+    return db.query("SELECT * FROM images ORDER BY id DESC LIMIT 10");
 };
 
 exports.addImage = function addImage(url, username, title, description) {
@@ -34,14 +34,12 @@ exports.addComment = function addComment(username, comment_text, image_id) {
 };
 
 exports.getNextCards = function getNextCards(id) {
-    return db.query("SELECT * FROM images WHERE id < $1 LIMIT 15", [id]);
+    return db.query(
+        "SELECT * FROM images WHERE id < $1 ORDER BY id DESC LIMIT 10",
+        [id]
+    );
 };
 
-// SELECT images.*, (
-//     SELECT id FROM images
-//     ORDER BY id ASC
-//     LIMIT 1
-// ) AS 'lowestId' FROM images
-// WHERE ID < $1
-// ORDER BY id DESC
-// LIMIT 10;
+exports.getLast = function getLast() {
+    return db.query("SELECT id FROM images ORDER BY id ASC LIMIT 1");
+};

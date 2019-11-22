@@ -8,7 +8,8 @@ new Vue({
         file: null,
         currentImage: location.hash.slice(1),
         comment: "",
-        comment_username: ""
+        comment_username: "",
+        showMore: true
     },
     mounted: function() {
         var me = this;
@@ -20,6 +21,12 @@ new Vue({
             .catch(function(err) {
                 console.log(err);
             });
+        window.addEventListener("hashchange", function() {
+            console.log("window.location.hash", window.location.hash.slice(1));
+            console.log("currentImage before click:", me.currentImage);
+            me.currentImage = window.location.hash.slice(1);
+            console.log("currentimage after click", me.currentImage);
+        });
     },
     methods: {
         handleClick: function(e) {
@@ -47,10 +54,33 @@ new Vue({
         },
         unsetCurrentImage: function() {
             this.currentImage = null;
+            location.hash = "";
+            history.replaceState(null, null, " ");
+        },
+        getNext: function() {
+            var me = this;
+            const lastId = me.cards[me.cards.length - 1].id;
+            axios
+                .get("/next/" + lastId)
+                .then(function(response) {
+                    me.cards.push.apply(me.cards, response.data);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+            axios
+                .get("/last")
+                .then(function(response) {
+                    if (response.data[0].id == lastId) {
+                        me.showMore = false;
+                    }
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
         }
     }
 });
-
 document.addEventListener("DOMContentLoaded", function() {
     var elems = document.querySelectorAll(".modal");
     var instances = M.Modal.init(elems, options);

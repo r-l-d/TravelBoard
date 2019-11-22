@@ -1,23 +1,3 @@
-// Vue.component("my-component", {
-//     // template: "<h2>hiya!</h2>",
-//     template: `#my-template`,
-//     data: function() {
-//         return {
-//             subGreeting: "yo!"
-//         };
-//     },
-//     props: ["greetee", "greeting", "id"],
-//     //all arguments passed to component
-//     methods: {
-//         changeSubGreeting: function() {
-//             this.subGreeting = "nice to see you";
-//         },
-//         sendMessageToParent: function() {
-//             this.$emit("goodbye");
-//         }
-//     }
-// });
-
 Vue.component("image-modal", {
     template: `#modal-template`,
     data: function() {
@@ -34,21 +14,25 @@ Vue.component("image-modal", {
     },
     props: ["id"],
     mounted: function() {
-        console.log("this.id: ", this.id);
         var me = this;
-        axios.get("/modal/" + this.id).then(function({ data }) {
-            console.log("data:", data);
-            me.title = data.title;
-            me.url = data.url;
-            me.username = data.username;
-            me.created_at = data.created_at;
-            me.comments = data.comments;
-        });
-        var self = this;
-        addEventListener("hashchange", function() {
-            //set the location.hash to the id from the hash
-            //modal should close itself if there is no image returned to modalds
-        });
+        axios
+            .get("/modal/" + this.id)
+            .then(function({ data }) {
+                if (data.length == 0) {
+                    me.sendMessageToParent();
+                } else {
+                    console.log("data is found");
+                    me.title = data.title;
+                    me.url = data.url;
+                    me.username = data.username;
+                    me.created_at = data.created_at;
+                    me.comments = data.comments;
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+                console.log("no image found");
+            });
     },
     methods: {
         sendMessageToParent: function() {
@@ -77,8 +61,25 @@ Vue.component("image-modal", {
     },
     watch: {
         id: function() {
-            //function to run when id changes and modeal is open.
-            //past the same code that is from the mounted function
+            var me = this;
+            axios
+                .get("/modal/" + this.id)
+                .then(function({ data }) {
+                    if (data.length == 0) {
+                        me.sendMessageToParent();
+                    } else {
+                        console.log("data", data);
+                        console.log("hash change, new image found");
+                        me.title = data.title;
+                        me.url = data.url;
+                        me.username = data.username;
+                        me.created_at = data.created_at;
+                        me.comments = data.comments;
+                    }
+                })
+                .catch(function(err) {
+                    console.log("hash changed, no image found");
+                });
         }
     }
 });

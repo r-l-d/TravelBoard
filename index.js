@@ -29,7 +29,7 @@ app.use(express.json());
 
 app.get("/cards", (req, res) => {
     db.getCards().then(({ rows }) => {
-        res.json(rows.reverse());
+        res.json(rows);
     });
 });
 
@@ -52,15 +52,19 @@ app.get("/modal/:id", (req, res) => {
     let data = {};
     db.getImage(id)
         .then(({ rows }) => {
-            data = rows[0];
-            db.getComments(id)
-                .then(({ rows }) => {
-                    data.comments = rows;
-                    res.json(data);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            if (rows.length != 0) {
+                data = rows[0];
+                db.getComments(id)
+                    .then(({ rows }) => {
+                        data.comments = rows;
+                        res.json(data);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else {
+                res.json(rows);
+            }
         })
         .catch(err => {
             console.log(err);
@@ -80,6 +84,23 @@ app.post("/comment", (req, res) => {
         .catch(err => {
             console.log(err);
         });
+});
+
+app.get("/next/:id", (req, res) => {
+    const id = req.params.id;
+    db.getNextCards(id)
+        .then(({ rows }) => {
+            res.json(rows);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
+app.get("/last", (req, res) => {
+    db.getLast().then(({ rows }) => {
+        res.json(rows);
+    });
 });
 
 app.listen(8080, () => console.log("Listening"));
