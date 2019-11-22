@@ -78,7 +78,7 @@ Vue.component("image-modal", {
                     }
                 })
                 .catch(function(err) {
-                    console.log("hash changed, no image found");
+                    console.log(err);
                 });
         }
     }

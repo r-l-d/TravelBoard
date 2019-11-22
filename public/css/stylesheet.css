@@ -53,4 +53,10 @@ img {
 
 #commentForm {
     display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#commentSubmit {
+    width: 200px;
 }

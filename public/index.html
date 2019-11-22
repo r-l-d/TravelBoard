@@ -11,19 +11,22 @@
     <div class="container">
         <h1>Imageboard</h1>
         <div id="main">
-            <div class="row">
-                <div class="col s12 m8 l4">
-                    <form>
-                        <input v-model='title' type="text" name="title" placeholder="title">
-                        <input v-model='description'type="text" name="description" placeholder="description">
-                        <input v-model='username' type="text" name="username" placeholder="username">
-                        <input @change='handleChange' type="file" name="file" accept="image/*">
-                        <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </form>
+                <div class="collapsible">
+                    <div class="collapsible-header">
+                        <h5>Add an image</h5>
+                    </div>
+                    <div class="collapsible-body">
+                        <form>
+                            <input v-model='title' type="text" name="title" placeholder="title">
+                            <input v-model='description'type="text" name="description" placeholder="description">
+                            <input v-model='username' type="text" name="username" placeholder="username">
+                            <input @change='handleChange' type="file" name="file" accept="image/*">
+                            <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
             <image-modal
                 v-if='currentImage'
@@ -33,7 +36,6 @@
             </image-modal>
             <div id="cardContainer">
                 <div class="row">
-                    <!-- @click='setCurrentImage(card.id)' -->
                     <div class="col s12 m8 l4" v-for='card in cards'>
                         <div class="card hoverable">
                             <div class="card-image">
@@ -48,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <button v-if='showMore' @click='getNext'>See More</button>
+            <button class="waves-effect waves-teal btn right" v-if='showMore' @click='getNext'>See More</button>
         </div>
     </div>
 
@@ -61,10 +63,12 @@
 
 
                         <h3>{{title}}</h3>
-                        <a href="javascript://" @click='sendMessageToParent'>X</a>
-
+                        <a class="right waves-effect waves-light btn" href="javascript://" @click='sendMessageToParent'>
+                            <i class="material-icons left">close</i>
+                            CLOSE
+                        </a>
                         <div class="modal-body">
-                        <img :src="url">
+                        <img class="center" :src="url">
                         <h6>{{description}}</h6>
                         <p>Uploaded by {{username}} on {{created_at}}</p>
                         <h6>Comments:</h6>
@@ -78,7 +82,7 @@
                         <form id="commentForm">
                             <input v-model='comment' type="text" name="comment" placeholder="Comment">
                             <input v-model='comment_username' type="text" name="comment_username" placeholder="Username">
-                            <button class="waves-effect waves-teal btn-flat" @click.prevent.default='submitComment'>Submit
+                            <button id="commentSubmit" class="waves-effect waves-teal btn" @click.prevent.default='submitComment'>Submit
                                 <i class="material-icons right">send</i>
                             </button>
                         </form>
