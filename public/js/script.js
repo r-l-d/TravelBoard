@@ -19,7 +19,8 @@ new Vue({
         currentImage: location.hash.slice(1),
         comment: "",
         comment_username: "",
-        showMore: true
+        showMore: true,
+        error: false
     },
     mounted: function() {
         var me = this;
@@ -51,9 +52,15 @@ new Vue({
                 .post("/upload", fd)
                 .then(function(resp) {
                     me.cards.unshift(resp.data.image);
+                    me.title = "";
+                    me.description = "";
+                    me.username = "";
+                    me.file = null;
+                    me.error = false;
                 })
                 .catch(function(err) {
                     console.log(err);
+                    me.error = true;
                 });
         },
         handleChange: function(e) {
@@ -91,3 +98,5 @@ new Vue({
         }
     }
 });
+
+Vue.use(require("vue-moment"));

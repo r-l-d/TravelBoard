@@ -25,6 +25,7 @@ Vue.component("image-modal", {
                     me.title = data.title;
                     me.url = data.url;
                     me.username = data.username;
+                    me.description = data.description;
                     me.created_at = data.created_at;
                     me.comments = data.comments;
                 }
@@ -73,6 +74,7 @@ Vue.component("image-modal", {
                         me.title = data.title;
                         me.url = data.url;
                         me.username = data.username;
+                        me.description = data.description;
                         me.created_at = data.created_at;
                         me.comments = data.comments;
                     }
@@ -83,3 +85,5 @@ Vue.component("image-modal", {
         }
     }
 });
+
+Vue.use(require("vue-moment"));

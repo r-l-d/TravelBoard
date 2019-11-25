@@ -12,8 +12,8 @@
     border: 1px black solid;
 }
 */
-img {
-    max-width: 400px;
+#modalImg {
+    max-width: 80%;
     object-fit: scale-down;
 }
 
@@ -29,22 +29,31 @@ img {
     transition: opacity 0.3s ease;
 }
 
-/* .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-} */
-
-.modal-container {
+.modal-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 800px;
-    margin: 0px auto;
+    max-width: 100%;
+    margin: 10px auto;
     padding: 20px 30px;
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
+    height: 700px;
+    max-height: 90%;
+}
+
+.modal-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     overflow-y: auto;
-    max-height: 100%;
+    padding: 20px 20px 20px 20px;
 }
 
 .modal-default-button {
@@ -53,10 +62,26 @@ img {
 
 #commentForm {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 }
 
 #commentSubmit {
     width: 200px;
+}
+
+#modal-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#cardImage {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+#seeMore {
+    margin: 20px 20px;
 }

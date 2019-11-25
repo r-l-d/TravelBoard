@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Imageboard</title>
+    <title>Travelboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/css/stylesheet.css">
@@ -9,24 +9,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Imageboard</h1>
+        <h1>Travelboard</h1>
         <div id="main">
-                <div class="collapsible">
-                    <div class="collapsible-header">
-                        <h5>Add an image</h5>
-                    </div>
-                    <div class="collapsible-body">
-                        <form>
-                            <input v-model='title' type="text" name="title" placeholder="title">
-                            <input v-model='description'type="text" name="description" placeholder="description">
-                            <input v-model='username' type="text" name="username" placeholder="username">
-                            <input @change='handleChange' type="file" name="file" accept="image/*">
-                            <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+
+                    <h6>Add an image</h6>
+                    <form>
+                        <input v-model='title' type="text" name="title" placeholder="title">
+                        <input v-model='description'type="text" name="description" placeholder="description">
+                        <input v-model='username' type="text" name="username" placeholder="username">
+                        <input  @change='handleChange' type="file" name="file" accept="image/*">
+                        <button class="waves-effect waves-light btn" @click.prevent.default='handleClick'>Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                        <div v-if='error'>Looks like something went wrong. Please try again!</div>
+                    </form>
+
+
 
             <image-modal
                 v-if='currentImage'
@@ -40,17 +38,17 @@
                         <div class="card hoverable">
                             <div class="card-image">
                                 <a :href="'#' + card.id">
-                                    <img :src="card.url" :alt="card.description">
+                                    <img  id="cardImage" :src="card.url" :alt="card.description">
                                 </a>
                             </div>
                             <div class="card-action">
-                                <a :href="'#' + card.id">{{card.title}}</a>
+                                <a class="teal-text" :href="'#' + card.id"><i class="material-icons left">map</i>{{card.title}}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="waves-effect waves-teal btn right" v-if='showMore' @click='getNext'>See More</button>
+            <button id="seeMore" class="waves-effect waves-light btn right" v-if='showMore' @click='getNext'>See More</button>
         </div>
     </div>
 
@@ -60,24 +58,25 @@
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
-
-
-                        <h3>{{title}}</h3>
-                        <a class="right waves-effect waves-light btn" href="javascript://" @click='sendMessageToParent'>
-                            <i class="material-icons left">close</i>
-                            CLOSE
+                        <a class="right" href="javascript://" @click='sendMessageToParent'>
+                            <i class="material-icons close">close</i>
                         </a>
+                        <h3>{{title}}</h3>
                         <div class="modal-body">
-                        <img class="center" :src="url">
-                        <h6>{{description}}</h6>
-                        <p>Uploaded by {{username}} on {{created_at}}</p>
-                        <h6>Comments:</h6>
-                        <ul class="collection">
-                            <li class="collection-item" v-for='comment in comments' >
-                                <div>{{comment.comment_text}}</div>
-                                <div>{{comment.username}} on {{comment.created_at}}</div>
-                            </li>
-                        </ul>
+                            <div id="modal-image">
+                                <img  id="modalImg" :src="url">
+                                <p>Uploaded by {{username}} on {{created_at}}</p>
+                                <h5>{{description}}</h5>
+                            </div>
+                            <div v-if='comments.length > 0'>
+                                <h6>Comments:</h6>
+                                <ul class="collection">
+                                    <li class="collection-item" v-for='comment in comments' >
+                                        <div>{{comment.comment_text}}</div>
+                                        <div>{{comment.username}} on {{comment.created_at}}</div>
+                                    </li>
+                                </ul>
+                            </div>
                         <h6>Add a comment:</h6>
                         <form id="commentForm">
                             <input v-model='comment' type="text" name="comment" placeholder="Comment">
